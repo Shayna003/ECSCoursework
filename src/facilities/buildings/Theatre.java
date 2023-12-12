@@ -4,15 +4,13 @@ import facilities.Facility;
 /**
  * facilities for lectures, required for students to learn theoretical knowledge.
  */
-public class Theatre extends Facility implements Building
+public class Theatre extends AbstractBuilding implements Building
 {
-  int level = 1;
-
   public Theatre(String name)
   {
-    super(name);
+    super(name, 6, 10, 200);
   }
-
+/*
   @Override
   public int getLevel() {
     return level;
@@ -36,5 +34,5 @@ public class Theatre extends Facility implements Building
   @Override
   public int getCapacity() {
     return BuildingFactory.getCapacity(this);
-  }
+  }*/
 }

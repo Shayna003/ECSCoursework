@@ -5,16 +5,14 @@ import facilities.Facility;
 /**
  * facilities providing accommodation for students.
  */
-public class Hall extends Facility implements Building
+public class Hall extends AbstractBuilding
 {
-  int level = 1;
-
   public Hall(String name)
   {
-    super(name);
+    super(name, 4, 6, 100);
   }
 
-  @Override
+/*  @Override
   public int getLevel() {
     return level;
   }
@@ -38,5 +36,5 @@ public class Hall extends Facility implements Building
   public int getCapacity()
   {
     return BuildingFactory.getCapacity(this);
-  }
+  }*/
 }

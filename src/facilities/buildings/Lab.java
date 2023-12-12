@@ -6,16 +6,14 @@ import facilities.Facility;
  * facilities for laboratory sessions, required for students to train their practical
  * skills.
  */
-public class Lab  extends Facility implements Building
+public class Lab  extends AbstractBuilding
 {
-  int level = 1;
-
   public Lab(String name)
   {
-    super(name);
+    super(name, 5, 5, 300);
   }
 
-  @Override
+/*  @Override
   public int getLevel() {
     return level;
   }
@@ -38,5 +36,5 @@ public class Lab  extends Facility implements Building
   @Override
   public int getCapacity() {
     return BuildingFactory.getCapacity(this);
-  }
+  }*/
 }
