@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b691d40-bc46-4595-88ad-1b4a2438eb61" name="Changes" comment="part 2 done">
-      <change afterPath="$PROJECT_DIR$/src/facilities/buildings/CannotUpgradeException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/university/University.java" afterDir="false" />
+    <list default="true" id="0b691d40-bc46-4595-88ad-1b4a2438eb61" name="Changes" comment="part 3 done">
+      <change afterPath="$PROJECT_DIR$/src/readme.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/university/HumanResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/university/Staff.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facilities/buildings/AbstractBuilding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/facilities/buildings/AbstractBuilding.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facilities/buildings/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/facilities/buildings/Building.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/facilities/buildings/BuildingFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/facilities/buildings/BuildingFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/university/Estate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/Estate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/university/University.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/University.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +123,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702401991712</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="part 3 done">
+      <created>1702416252643</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1702416252643</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -142,6 +147,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="part 2 done" />
-    <option name="LAST_COMMIT_MESSAGE" value="part 2 done" />
+    <MESSAGE value="part 3 done" />
+    <option name="LAST_COMMIT_MESSAGE" value="part 3 done" />
   </component>
 </project>

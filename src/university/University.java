@@ -17,6 +17,9 @@ public class University
   //An instance of the Estate class for managing the university’s facilities.
   private Estate estate;
 
+  // manages staff
+  private HumanResource humanResource;
+
   //The current reputation of the University.
   private int reputation;
 
@@ -26,6 +29,7 @@ public class University
   public University(int funding)
   {
     estate = new Estate();
+    humanResource = new HumanResource();
     this.budget = funding;
   }
 
@@ -39,19 +43,6 @@ public class University
    */
   public Facility build(String type, String name)
   {
-
-    //Facility facility = estate.addFacility(type, name);
-
-/*    // I guess the test harness monitors your call stack???
-    BuildingData data = estate.getBuildingData(type);
-
-    // the test harness does not allow you to return null prematurely for some wierd reasons
-    if (data.base_cost > budget)
-    {
-      System.err.println("attempting build: " + type + ", name: " + name);
-      System.err.println("base_cost: " + data.base_cost + ", budget: " + budget);
-    }*/
-
     Facility facility = estate.buildFacility(type, name, budget);
     if (facility == null) return null;
     budget -= ((AbstractBuilding)facility).getBase_cost();
