@@ -1,0 +1,25 @@
+
+The main purpose of EcsSim is to build facilities and to hire staff using “EcsCoins” (the simulation currency) to create a successful university. The university will gain its reputation and EcsCoins by teaching the students.
+The next sections will take you through the construction of the various objects and people in your university. You are requested to follow this sequence of development as it will allow you to slowly add more functionality and complexity to your university.
+
+java level 17 is used for this project
+
+
+
+
+  /**
+   * @return true if can increase level
+   */
+  boolean canIncreaseLevel();
+
+  /**
+   * @return maximum level of this building
+   */
+  static int getMaximumLevel();
+
+  int getBaseCost();
+
+  /**
+   * @return cost to increase level, or -1 if cannot increase level
+   */
+  int increaseLevelCost();
