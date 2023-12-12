@@ -2,17 +2,59 @@ package university;
 
 import facilities.Facility;
 import facilities.buildings.AbstractBuilding;
+//import facilities.buildings.BuildingFactory.BuildingData;
+import facilities.buildings.Building;
 import facilities.buildings.Hall;
 import facilities.buildings.Lab;
 import facilities.buildings.Theatre;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class Estate
 {
-  ArrayList<Facility> facilities;
+  private ArrayList<Facility> facilities;
   //int number_of_students;
   //float maintenance_cost;
+
+
+  public static final HashMap<String, BuildingData> buildingDataRecords;
+
+  static
+  {
+    buildingDataRecords = new HashMap<>();
+    buildingDataRecords.put("Hall", new BuildingData(4, 6, 100));
+    buildingDataRecords.put("Lab", new BuildingData(5, 5, 300));
+    buildingDataRecords.put("Theatre", new BuildingData(6, 10, 200));
+  }
+
+  static class BuildingData
+  {
+    int max_level;
+    int base_capacity;
+    int base_cost;
+
+    public BuildingData(int max_level, int base_capacity, int base_cost)
+    {
+      this.max_level = max_level;
+      this.base_capacity = base_capacity;
+      this.base_cost = base_cost;
+    }
+  }
+
+/*  *//**
+   * called by the University
+   * @return true if upgrade success
+   *//*
+  public boolean upgrade(Building building)
+  {
+
+  }*/
+
+  public BuildingData getBuildingData(String type)
+  {
+    return buildingDataRecords.get(type);
+  }
 
   public Estate()
   {
@@ -28,24 +70,25 @@ public class Estate
   }
 
   /**
-   * traverse the entire arraylist to find facility with mininum capacity
+   * Maps a String type to a concrete class
+   * Does an additional check for budget deficit
+   * and adds to the facility arraylist
+   * @return a Facility/Building/AbstractBuilding whatever! denoted by the String type
    */
-/*  private void update_number_of_students()
+  public Facility buildFacility(String type, String name, float budget)
   {
-    int min = Integer.MAX_VALUE;
-    for (Facility f : facilities)
-    {
-      int c = ((AbstractBuilding)f).getCapacity();
-      if (c < min) min = c;
-    }
-    //number_of_students = min;
-  }*/
+    BuildingData data = getBuildingData(type);
+    if (data == null || data.base_cost > budget) return null;
+
+    return addFacility(type, name);
+  }
 
   /**
-   * Construct a new facility. The new facility is specified by its type, e.g., "Hall", "Lab", "Theatre", and its name.
-   * The new facility should be added to the facilities list. In the case where the type is not known, null is returned.
+   * Simple maps a String type to an object of a concrete class
+   * does not add to the facilities arraylist
+   * @return a Facility/Building/AbstractBuilding whatever! denoted by the String type
    */
-  public Facility addFacility(String type, String name)
+  public Facility buildFacility(String type, String name)
   {
     AbstractBuilding facility;
     if (type.equals("Hall"))
@@ -64,6 +107,32 @@ public class Estate
     {
       return null;
     }
+    return facility;
+  }
+
+  /**
+   * traverse the entire arraylist to find facility with mininum capacity
+   */
+/*  private void update_number_of_students()
+  {
+    int min = Integer.MAX_VALUE;
+    for (Facility f : facilities)
+    {
+      int c = ((AbstractBuilding)f).getCapacity();
+      if (c < min) min = c;
+    }
+    //number_of_students = min;
+  }*/
+
+  //Class<? extends AbstractBuilding> getClass
+
+  /**
+   * Construct a new facility. The new facility is specified by its type, e.g., "Hall", "Lab", "Theatre", and its name.
+   * The new facility should be added to the facilities list. In the case where the type is not known, null is returned.
+   */
+  public Facility addFacility(String type, String name)
+  {
+
 
 /*    if (facilities.size() == 0)
     {
@@ -74,6 +143,8 @@ public class Estate
       number_of_students = Math.min(number_of_students, facility.getCapacity());
     }*/
 
+    Facility facility = buildFacility(type, name);
+    if (facility == null) return null;
     facilities.add(facility);
     //maintenance_cost += facility.getCapacity() * 0.1f;
 

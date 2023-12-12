@@ -6,7 +6,6 @@ package facilities.buildings;
  */
 public interface Building
 {
-
   /**
    * @return the current level of the building
    */

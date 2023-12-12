@@ -7,10 +7,10 @@ import facilities.Facility;
  */
 public class AbstractBuilding extends Facility implements Building/*, Comparable<AbstractBuilding>*/
 {
-  int level;
-  int max_level;
-  int base_capacity;
-  int base_cost;
+  private int level;
+  private int max_level;
+  private int base_capacity;
+  private int base_cost;
 
   public AbstractBuilding(String name, int max_level, int base_capacity, int base_cost)
   {
@@ -22,8 +22,24 @@ public class AbstractBuilding extends Facility implements Building/*, Comparable
   }
 
   @Override
-  public int getLevel() {
+  public int getLevel()
+  {
     return level;
+  }
+
+  public int getBase_cost()
+  {
+    return base_cost;
+  }
+
+  public int getBase_capacity()
+  {
+    return base_capacity;
+  }
+
+  public int getMax_level()
+  {
+    return max_level;
   }
 
   @Override
@@ -42,6 +58,15 @@ public class AbstractBuilding extends Facility implements Building/*, Comparable
   @Override
   public int getCapacity() {
     return (int) (base_capacity * Math.pow(2, level - 1));
+  }
+
+  /**
+   * for easier debugging
+   */
+  @Override
+  public String toString()
+  {
+    return this.getClass().getSimpleName() + "[name=" + getName() + "," + "level=" + level + "]";
   }
 
 /*  @Override

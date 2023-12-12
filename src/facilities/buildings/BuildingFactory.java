@@ -9,14 +9,14 @@ import java.util.HashMap;
 public class BuildingFactory
 {
   // a way to implement table 1 from the specs, by using a factory class to take care of building and upgrading buildings
-  public static final HashMap<Class<? extends Building>, BuildingData> buildingDataRecords;
+  public static final HashMap<String, BuildingData> buildingDataRecords;
 
   static
   {
     buildingDataRecords = new HashMap<>();
-    buildingDataRecords.put(Hall.class, new BuildingData(4, 6, 100));
-    buildingDataRecords.put(Lab.class, new BuildingData(5, 5, 300));
-    buildingDataRecords.put(Theatre.class, new BuildingData(6, 10, 200));
+    buildingDataRecords.put("Hall", new BuildingData(4, 6, 100));
+    buildingDataRecords.put("Lab", new BuildingData(5, 5, 300));
+    buildingDataRecords.put("Theatre", new BuildingData(6, 10, 200));
   }
 
   /**
