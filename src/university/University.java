@@ -12,7 +12,7 @@ import university.Estate.BuildingData;
 public class University
 {
   //The current budget (in ECScoins) of the University.
-  private float budget;
+  private float budget; // since it's in ECSCoins it doesn't have to stick to 2 decimal places. Could be valuable like bitcoin or something
 
   //An instance of the Estate class for managing the university’s facilities.
   private Estate estate;
@@ -31,6 +31,35 @@ public class University
     estate = new Estate();
     humanResource = new HumanResource();
     this.budget = funding;
+    reputation = 0;
+  }
+
+  public HumanResource getHumanResource()
+  {
+    return humanResource;
+  }
+
+  public Estate getEstate()
+  {
+    return estate;
+  }
+
+  public void setBudget(float newValue)
+  {
+    if (newValue< 0)
+    {
+      // error!
+    }
+    budget = newValue;
+  }
+
+  public void setReputation(int newValue)
+  {
+      if (newValue< 0)
+      {
+        // error!
+      }
+      reputation = newValue;
   }
 
   /**

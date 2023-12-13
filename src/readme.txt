@@ -1,5 +1,7 @@
 parts of coursework attempted: 1, 2, 3
 
+~4h spend on part1-4, 2 of which were on trying to learn generics for class modeling in part 1
+
 how to run:
 
 extensions:

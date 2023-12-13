@@ -15,6 +15,13 @@ public class Estate
 {
   private ArrayList<Facility> facilities;
   //int number_of_students;
+
+  //for unique naming of a building
+  int buildingID = 1;
+  int labID = 1;
+  int theatreID = 1;
+  int hallID = 1;
+
   //float maintenance_cost;
 
 

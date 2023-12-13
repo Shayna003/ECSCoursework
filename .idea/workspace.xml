@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b691d40-bc46-4595-88ad-1b4a2438eb61" name="Changes" comment="part 3 done">
-      <change afterPath="$PROJECT_DIR$/src/readme.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/university/HumanResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/university/Staff.java" afterDir="false" />
+    <list default="true" id="0b691d40-bc46-4595-88ad-1b4a2438eb61" name="Changes" comment="part 4 done">
+      <change afterPath="$PROJECT_DIR$/src/EcsSim.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facilities/buildings/AbstractBuilding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/facilities/buildings/AbstractBuilding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/university/Estate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/Estate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/university/HumanResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/HumanResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/university/University.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/University.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +48,14 @@
     "project.structure.side.proportion": "0.0"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.TestEcsSimPart3">
+  <component name="RunManager" selected="Application.EcsSim">
+    <configuration name="EcsSim" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="EcsSim" />
+      <module name="ECSCoursework" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="TestEcsSimPart1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ECSCoursework" />
       <extension name="coverage">
@@ -94,6 +103,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.EcsSim" />
         <item itemvalue="JUnit.TestEcsSimPart3" />
         <item itemvalue="JUnit.TestEcsSimPart2" />
         <item itemvalue="JUnit.TestEcsSimPart1" />
@@ -130,7 +140,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702416252643</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="part 4 done">
+      <created>1702418568315</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1702418568315</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -148,6 +165,7 @@
     <MESSAGE value="initial commit" />
     <MESSAGE value="part 2 done" />
     <MESSAGE value="part 3 done" />
-    <option name="LAST_COMMIT_MESSAGE" value="part 3 done" />
+    <MESSAGE value="part 4 done" />
+    <option name="LAST_COMMIT_MESSAGE" value="part 4 done" />
   </component>
 </project>
