@@ -52,7 +52,7 @@ public class EcsSim
    e) For any employed staff, they can leave the university according to the following
    – If the staff has 30 years of teaching, they will leave the university
    – Otherwise, the chance that the staff stays is the staff’s stamina.
-   f) Finally, for all remaining employed staff, replenish their stamina.
+   f) Finally, for all remaining employed staff, replenish their stamina (stamina + 20).
 
    the strategy is that you need a minimum initial funding to be able to build any buildings, in order to be able to hire students.
    TODO: outputs for everything
@@ -118,7 +118,7 @@ public class EcsSim
     for (int i = 0; i < years; i++)
     {
       simulate();
-      //pause(100);
+      pause(100);
     }
   }
 
