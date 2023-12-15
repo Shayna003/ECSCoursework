@@ -1,6 +1,10 @@
 import facilities.Facility;
 import facilities.buildings.AbstractBuilding;
 import facilities.buildings.Building;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import university.Estate;
@@ -21,7 +25,85 @@ public class EcsSim
   int year;
   boolean printSimulation = true;
 
+  /**
+   * java EcsSim staff.txt 2000 50
+   * @param args [0] is configuration file, [1] is starting EcsCoins, [2] is number of years to simulate
+   */
   public static void main(String[] args)
+  {
+    File configFile = new File(args[0]);
+
+    // defaults
+    int startingCoins = 1000;
+    int years = 100;
+
+    try
+    {
+      startingCoins = Integer.parseInt(args[1]);
+    }
+    catch (NumberFormatException e)
+    {
+      e.printStackTrace();
+    }
+
+    try
+    {
+      years = Integer.parseInt(args[2]);
+    }
+    catch (NumberFormatException e)
+    {
+      e.printStackTrace();
+    }
+
+    EcsSim sim = new EcsSim(startingCoins);
+
+    try
+    {
+      loadConfiguration(configFile, sim);
+    }
+    catch (Exception e)
+    {
+      System.out.println("loading configuration file failed. resorting to default staff market of 100 randomly skilled staff");
+      e.printStackTrace();
+
+      for (int i = 0; i < 100; i++)
+      {
+        sim.staffMarket.add(new Staff("staff" + i, (int)(Math.random() * 101))); // populate staff market with some initial staff for sim to run
+      }
+      sim.staffMarket.sort((a, b) -> b.getSkill() - a.getSkill());
+    }
+
+    System.out.println("start simulation, staffMarketSize=" + sim.staffMarket.size() + ", targetYears=" + years + ", startingEcsCoins=" + startingCoins);
+    sim.simulate(years, true);
+  }
+
+  /**
+   * Initializes the staff market of EcsSim sim according to the configuration file
+   * @param configFile
+   * @param sim
+   * @throws Exception
+   */
+  public static void loadConfiguration(File configFile, EcsSim sim) throws Exception
+  {
+    try (BufferedReader reader = new BufferedReader(new FileReader(configFile)))
+    {
+      String line;
+      while ((line = reader.readLine()) != null)
+      {
+        //line = line.strip();
+        String[] expressions = line.split("\\(");
+        String name = expressions[0].strip();
+        int skill = Integer.parseInt(expressions[1].substring(0, expressions[1].length() - 1));
+        sim.staffMarket.add(new Staff(name, skill));
+      }
+    }
+    System.out.println(sim.staffMarket);
+  }
+
+  /**
+   * testing code used for part 5
+   */
+  private void internalTesting()
   {
     EcsSim sim = new EcsSim();
     int marketSize = 100;
@@ -44,7 +126,7 @@ public class EcsSim
   }
   public EcsSim()
   {
-    university = new University(1000); // initializes university with initial funding
+    university = new University(604); // initializes university with minimal initial funding to profit
   }
 
   public EcsSim(int funding)

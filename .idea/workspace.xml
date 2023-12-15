@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0b691d40-bc46-4595-88ad-1b4a2438eb61" name="Changes" comment="minor changes">
+      <change afterPath="$PROJECT_DIR$/staff.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/EcsSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EcsSim.java" afterDir="false" />
     </list>
@@ -47,6 +48,7 @@
     <configuration name="EcsSim" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="EcsSim" />
       <module name="ECSCoursework" />
+      <option name="PROGRAM_PARAMETERS" value="staff.txt 2000 50" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -96,6 +98,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.EcsSim" />
+      <item itemvalue="JUnit.TestEcsSimPart1" />
+      <item itemvalue="JUnit.TestEcsSimPart2" />
+      <item itemvalue="JUnit.TestEcsSimPart3" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.EcsSim" />
@@ -191,7 +199,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702645094483</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="minor changes">
+      <created>1702646980278</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1702646980278</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
