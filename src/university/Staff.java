@@ -54,7 +54,10 @@ public class Staff implements Comparable<Staff>
   {
     if (skill < 100) skill++;
     stamina -= (int) (Math.ceil(numberOfStudents/((double)(20 + skill))) * 20);
-    //TODO: stamina drops below 0
+
+    // in effect this would never happen though
+    if (stamina < 0) stamina = 0;
+
     int reputation = (int)((100 * skill) / ((double)(100 + numberOfStudents)));
     return reputation;
   }
@@ -87,7 +90,7 @@ public class Staff implements Comparable<Staff>
   }
 
   /**
-   * Meaningful prints
+   * For meaningful prints
    */
   @Override
   public String toString()

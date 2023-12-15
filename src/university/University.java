@@ -4,14 +4,13 @@ import facilities.Facility;
 import facilities.buildings.AbstractBuilding;
 import facilities.buildings.Building;
 import facilities.buildings.CannotUpgradeException;
-import university.Estate.BuildingData;
 
 /**
  * The University class (within the university package) keeps information about the university.
  */
 public class University
 {
-  //The current budget (in ECScoins) of the University.
+  //The current budget (in EcsCoins) of the University.
   private float budget; // since it's in ECSCoins it doesn't have to stick to 2 decimal places. Could be valuable like bitcoin or something
 
   //An instance of the Estate class for managing the university’s facilities.
@@ -46,9 +45,10 @@ public class University
 
   public void setBudget(float newValue)
   {
-    if (newValue< 0)
+    if (newValue < 0)
     {
       // error!
+      // can be triggered only if EcsSim started simulating with a starting budget of less than 604 (minimum needed to make university "run", i.e. profit
     }
     budget = newValue;
   }
@@ -83,12 +83,6 @@ public class University
     reputation += 100;
     return facility;
   }
-
-  /*protected void spend(float amount)
-  {
-    budget -= amount;
-    assert budget >= 0 : budget;
-  }*/
 
   /**
    * This method upgrades the input building and deduct the cost of upgrading from the university’s budget.

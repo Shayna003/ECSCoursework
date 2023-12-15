@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b691d40-bc46-4595-88ad-1b4a2438eb61" name="Changes" comment="minor changes">
-      <change afterPath="$PROJECT_DIR$/staff.txt" afterDir="false" />
+    <list default="true" id="0b691d40-bc46-4595-88ad-1b4a2438eb61" name="Changes" comment="part 6 done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/EcsSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EcsSim.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facilities/Facility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/facilities/Facility.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facilities/buildings/AbstractBuilding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/facilities/buildings/AbstractBuilding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facilities/buildings/BuildingFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facilities/buildings/CannotUpgradeException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/facilities/buildings/CannotUpgradeException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facilities/buildings/Hall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/facilities/buildings/Hall.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facilities/buildings/Lab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/facilities/buildings/Lab.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/facilities/buildings/Theatre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/facilities/buildings/Theatre.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/university/Estate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/Estate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/university/HumanResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/HumanResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/university/Staff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/Staff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/university/University.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/University.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +55,11 @@
     "project.structure.side.proportion": "0.0"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.EcsSim">
     <configuration name="EcsSim" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="EcsSim" />
@@ -206,7 +222,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702646980278</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="part 6 done">
+      <created>1702648149766</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1702648149766</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -229,6 +252,7 @@
     <MESSAGE value="part 5 basically done" />
     <MESSAGE value="bug fixes, more detailed output" />
     <MESSAGE value="minor changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor changes" />
+    <MESSAGE value="part 6 done" />
+    <option name="LAST_COMMIT_MESSAGE" value="part 6 done" />
   </component>
 </project>

@@ -4,19 +4,17 @@ import facilities.buildings.Building;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import university.Estate;
 import university.Staff;
 import university.University;
 
-import static java.lang.System.in;
 import static java.lang.System.lineSeparator;
 import static java.lang.System.out;
 
 /**
- * TODO: extension, readme.txt, comments, tests, refactor
+ * The only class with main method
+ * I have comments in readme.txt
  */
 public class EcsSim
 {
@@ -66,15 +64,20 @@ public class EcsSim
       System.out.println("loading configuration file failed. resorting to default staff market of 100 randomly skilled staff");
       e.printStackTrace();
 
-      for (int i = 0; i < 100; i++)
-      {
-        sim.staffMarket.add(new Staff("staff" + i, (int)(Math.random() * 101))); // populate staff market with some initial staff for sim to run
-      }
-      sim.staffMarket.sort((a, b) -> b.getSkill() - a.getSkill());
+      sim.populateStaffMarket(100);
     }
 
     System.out.println("start simulation, staffMarketSize=" + sim.staffMarket.size() + ", targetYears=" + years + ", startingEcsCoins=" + startingCoins);
     sim.simulate(years, true);
+  }
+
+  /**
+   * sorts staff market in descending order according to skill.
+   * to prioritize highly skilled staff first. the difference in salary is minimal
+   */
+  public void sortStaffMarket()
+  {
+    staffMarket.sort((a, b) -> b.getSkill() - a.getSkill());
   }
 
   /**
@@ -90,14 +93,28 @@ public class EcsSim
       String line;
       while ((line = reader.readLine()) != null)
       {
-        //line = line.strip();
         String[] expressions = line.split("\\(");
         String name = expressions[0].strip();
         int skill = Integer.parseInt(expressions[1].substring(0, expressions[1].length() - 1));
         sim.staffMarket.add(new Staff(name, skill));
       }
     }
+    sim.sortStaffMarket();
+    System.out.println("initial staff market:");
     System.out.println(sim.staffMarket);
+  }
+
+  /**
+   * fills staff market with a certain number of staff, with randomized skill level.
+   * used for testing and when reading from configuration file fails.
+   * @param marketSize
+   */
+  public void populateStaffMarket(int marketSize)
+  {
+    for (int i = 0; i < marketSize; i++)
+    {
+      staffMarket.add(new Staff("staff" + i, (int)(Math.random() * 101))); // populate staff market with some initial staff for sim to run
+    }
   }
 
   /**
@@ -111,11 +128,8 @@ public class EcsSim
     int coins = 603;
     System.out.println("start simulation, staffMarketSize=" + marketSize + ", targetYears=" + years + ", startingEcsCoins=" + coins);
 
-    for (int i = 0; i < marketSize; i++)
-    {
-      sim.staffMarket.add(new Staff("staff" + i, (int)(Math.random() * 101))); // populate staff market with some initial staff for sim to run
-    }
-    sim.staffMarket.sort((a, b) -> b.getSkill() - a.getSkill());
+    populateStaffMarket(marketSize);
+    sim.sortStaffMarket();
 
     sim.simulate(years, true);
   }
@@ -167,16 +181,13 @@ public class EcsSim
    – If the staff has 30 years of teaching, they will leave the university
    – Otherwise, the chance that the staff stays is the staff’s stamina.
    f) Finally, for all remaining employed staff, replenish their stamina (stamina + 20).
-
-   the strategy is that you need a minimum initial funding to be able to build any buildings, in order to be able to hire students.
-   TODO: outputs for everything
    */
   public void simulate()
   {
     int reputationBefore = university.getReputation();
     if (printSimulation) out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~year " + year + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     float yearStartingBudget = university.getBudget();
-    int yearStartingRepuation = university.getReputation();
+    int yearStartingReputation = university.getReputation();
     int yearStartingStudents = university.getEstate().getNumberOfStudents();
     int buildingsBuilt = 0;
     int buildingsUpgraded = 0;
@@ -186,7 +197,7 @@ public class EcsSim
 
     if (printSimulation) out.printf("starting budget=%.2f" + lineSeparator(), yearStartingBudget);
     if (printSimulation) out.println("Upgrading or buying new buildings: ");
-    //1a TODO: build additional facilities or upgrade existing ones. cannot do nothing here
+    //1a build additional facilities or upgrade existing ones. cannot do nothing here
     // compare halls capacity, labs capacity, theatre capacity. Try upgrading a building of the building category with the least capacity,
     // if not build a new building of such category, if not then don't spend money at this stage for this year.
     String least = university.getEstate().updateCapacities();
@@ -201,11 +212,8 @@ public class EcsSim
 
     // do not expand if having a bad teacher to student ratio or have no staff while there is staff to hire. This leads to more negative reputation.
     // but build buildings if not enough were built to have number of students > 0
-    //16000 - 21350
-
     // strangely enough, testing results show that not having this feature tends to lead to better average reputation of different simulations
     // I guess the reputation loss from not teaching is less than the potential gain from an expansionist strategy
-    //35287 37169
     boolean skipExpansion = false;//yearStartingStudents > 0 && (startingStaff == 0 || !ratioGood) && staffMarket.size() > 0;
     if (skipExpansion)
     {
@@ -241,6 +249,7 @@ public class EcsSim
         else
         {
           buildingsBuilt++;
+          // ugly OOP here, just too lazy
           university.setReputation(university.getReputation() + 100);
           int cost = ((AbstractBuilding)newBuiltFacility).getBase_cost();
           university.setBudget(university.getBudget() - cost);
@@ -260,7 +269,7 @@ public class EcsSim
     university.setBudget(university.getBudget() + university.getEstate().getNumberOfStudents() * 10);
     if (printSimulation) out.printf("Budget increased by %d from students" + lineSeparator(), university.getEstate().getNumberOfStudents() * 10);
 
-    //1c TODO: hire additional staff from the market to teach students. cannot do nothing here
+    //1c hire additional staff from the market to teach students. cannot do nothing here
     if (printSimulation) out.println("Hiring staff:");
     if (printSimulation) out.printf("    staff market size: %d" + lineSeparator(), staffMarket.size());
 
@@ -299,16 +308,14 @@ public class EcsSim
       else // attempt to hire staff
       {
         int studentSize = university.getEstate().getNumberOfStudents();
-        // to prevent concurrentmodificationerror
-        Iterator<Staff> staffIterator = staffMarket.iterator();//university.getHumanResource().getStaff();
+        // to prevent concurrent modification error
+        Iterator<Staff> staffIterator = staffMarket.iterator();
 
         // commented out area: somehow the final reputation tend to be higher if you aggressively hire staff for the first part of your program and get as much reputation as possible, even if you run out of staff quicker this wqy
         while (staffIterator.hasNext() && staffStageBudget > 0 && hireCount < 3 /*&& !staffToStudentsRatioGood(university.getHumanResource().getStaffSize(), studentSize)*/) // hireCount really depends on the size of the staff market.
         {
-          //13534, 69, 5, yes
-          //17030, 76, 3, no
-          //11699, 72, 3, yes
-          Staff staff = staffIterator.next();//17948 19000, year of depletion 73, 77
+          Staff staff = staffIterator.next();
+
           // prepare for the worst: compute theoretical salary by the highest value possible, 10.5% of skill
           float salary = staff.getSkill() * 0.105f;
           if (salary < staffStageBudget) // hire staff
@@ -331,7 +338,7 @@ public class EcsSim
     //background task: set uninstructed students to number of students
     university.getHumanResource().setUninstructedStudents(university.getEstate().getNumberOfStudents());
 
-    //2 TODO: let staff teach student. each staff can only teach once. this increases reputation
+    //2 let staff teach student. each staff can only teach once. this increases reputation
     if (printSimulation) out.println("Teaching students:");
     int total = university.getEstate().getNumberOfStudents();
     // since the maths make staff more like a commodity, might as well "spend" them without considering how long they stay at the university
@@ -373,7 +380,7 @@ public class EcsSim
     university.setReputation(university.getReputation() - university.getHumanResource().getUninstructedStudents());
     if (printSimulation) out.printf("reputation after=%d" + lineSeparator(), university.getReputation());
 
-    //3e decide the fate of employed staff
+    //3e decide the fate of employed staff (leave or stay)
     if (printSimulation) out.println("Deciding staff fate:");
     int staffSize = university.getHumanResource().getStaffSize();
     university.getHumanResource().decideStaffFate(printSimulation); // printing here
@@ -392,18 +399,9 @@ public class EcsSim
       out.printf("    Total budget change=%.2f, total reputation change=%d, " + lineSeparator() +
               "    number of students change=%d, staff size change=%d, staff hired=%d, staff left=%d" + lineSeparator() +
               "    buildings built=%d, buildings upgraded=%d" + lineSeparator(),
-          (university.getBudget() - yearStartingBudget), (university.getReputation() - yearStartingRepuation), (university.getEstate().getNumberOfStudents() - yearStartingStudents),
+          (university.getBudget() - yearStartingBudget), (university.getReputation() - yearStartingReputation), (university.getEstate().getNumberOfStudents() - yearStartingStudents),
           (university.getHumanResource().getStaffSize() - startingStaff), staffHired, staffLeft, buildingsBuilt, buildingsUpgraded);
 
-      /**
-       *     int yearStartingRepuationt = university.getReputation();
-       *     int yearStartingStudents = university.getEstate().getNumberOfStudents();
-       *     int buildingsBuilt = 0;
-       *     int buildingsUpgraded = 0;
-       *     int startingStaff = university.getHumanResource().getStaffSize();
-       *     int staffHired = 0;
-       *     int staffLeft = 0;
-       */
       university.getEstate().updateCapacities();
       out.println("Facilities Composition: ");
       out.println("    Capacities: halls=" + university.getEstate().hallsCapacity + ", labs=" + university.getEstate().labsCapacity + ", theatres=" + university.getEstate().theatresCapacity);
@@ -423,7 +421,7 @@ public class EcsSim
     for (int i = 0; i < years; i++)
     {
       simulate();
-      //pause(100);
+      //pause(100); // this really slows things down so I don't bother
     }
     System.out.println("simulation complete.");
   }
@@ -440,7 +438,7 @@ public class EcsSim
     }
     catch (InterruptedException e)
     {
-      // Terminate the simulation
+      e.printStackTrace();
     }
   }
 }

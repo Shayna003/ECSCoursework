@@ -2,33 +2,21 @@ package university;
 
 import facilities.Facility;
 import facilities.buildings.AbstractBuilding;
-//import facilities.buildings.BuildingFactory.BuildingData;
 import facilities.buildings.Building;
 import facilities.buildings.Hall;
 import facilities.buildings.Lab;
 import facilities.buildings.Theatre;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class Estate
 {
-  University university;
   private ArrayList<Facility> facilities;
-  //int number_of_students;
-
-  //for unique naming of a building
-/*  int buildingID = 1;
-  int labID = 1;
-  int theatreID = 1;
-  int hallID = 1;*/
-
-  //float maintenance_cost;
-
-
   public static final HashMap<String, BuildingData> buildingDataRecords;
 
+  // a way to store the building data information, by mapping type string to their data
+  // the mechanism can be improved but this is sufficient
   static
   {
     buildingDataRecords = new HashMap<>();
@@ -81,7 +69,7 @@ public class Estate
       ab = pq.poll();
       if (ab.getUpgradeCost() <= availableFunds && ab.getLevel() < ab.getMax_level())
       {
-        return (Building) ab;
+        return ab;
       }
     }
     while(!pq.isEmpty());
@@ -149,47 +137,14 @@ public class Estate
   }
 
   /**
-   * traverse the entire arraylist to find facility with mininum capacity
-   */
-/*  private void update_number_of_students()
-  {
-    int min = Integer.MAX_VALUE;
-    for (Facility f : facilities)
-    {
-      int c = ((AbstractBuilding)f).getCapacity();
-      if (c < min) min = c;
-    }
-    //number_of_students = min;
-  }*/
-
-  //Class<? extends AbstractBuilding> getClass
-
-  /**
    * Construct a new facility. The new facility is specified by its type, e.g., "Hall", "Lab", "Theatre", and its name.
    * The new facility should be added to the facilities list. In the case where the type is not known, null is returned.
    */
   public Facility addFacility(String type, String name)
   {
-
-
-/*    if (facilities.size() == 0)
-    {
-      number_of_students = facility.getCapacity();
-    }
-    else
-    {
-      number_of_students = Math.min(number_of_students, facility.getCapacity());
-    }*/
-
     Facility facility = buildFacility(type, name);
     if (facility == null) return null;
     facilities.add(facility);
-    //maintenance_cost += facility.getCapacity() * 0.1f;
-
-    //int index = Collections.binarySearch(facilities, facility);
-    //(-(insertion point) - 1
-    //if (index >= 0) facilities.add(index, facility);
-    //else facilities.add(-index - 1, facility);
 
     return facility;
   }
@@ -206,10 +161,10 @@ public class Estate
       cost += ((AbstractBuilding)f).getCapacity() * 0.1f;
     }
     return cost;
-    //return maintenance_cost;
   }
 
   // to lazy for getters setters
+  // for recording the number of each type of building, and the total capacity of each
   public int hallsCapacity;
   public int labsCapacity;
   public int theatresCapacity;
@@ -236,7 +191,7 @@ public class Estate
     capacity = 0;
 
     halls = 0; labs = 0;theatres = 0;
-    String least = "";
+    String least = null; // in theory null would never be returned so it doesn't matter
 
     for (Facility f : facilities)
     {
@@ -287,7 +242,6 @@ public class Estate
     int labs = 0;
     int theatres = 0;
 
-    //int students = Integer.MAX_VALUE;
     for (Facility f : facilities)
     {
       int capacity = ((AbstractBuilding) f).getCapacity();
@@ -298,9 +252,5 @@ public class Estate
     }
 
     return Math.min(Math.min(halls, labs), theatres);
-    //return students;
-
-    //return number_of_students;
-    //((AbstractBuilding)facilities.get(0)).getCapacity();
   }
 }

@@ -1,8 +1,9 @@
-parts of coursework attempted: 1, 2, 3, 4, 5, 6, 7
+parts of coursework attempted: 1, 2, 3, 4, 5, 6
 
 Notes:
 I'm very proud of my algorithm. It attempts to find the best way to spend coins, maintain a good student to teacher ratio,
-budget never drops below 0, there were never uninstructed students, incompetent always teachers (lower skill level) always considered last when hiring
+budget never drops below 0(if starting EcsCoins >= 604 to buy one of each building to get a positive number of students),
+there were never uninstructed students(if the staff market is reasonable), incompetent teachers (lower skill level) always considered last when hiring
 (considered in the order of skill level), stamina drop is always 20 if teachers are to teach (and will teach the maximum number of students while only dropping 20 stamina),
 there is a very detailed breakdown in program output (or you can choose not to have any output).
 I do want to limit the rate of hiring new teachers, because they have a 20% chance to leave every year(due to the nature of the formulas).
@@ -16,10 +17,12 @@ So I will say the strategy mostly depends on 1. target number of years to simula
 For instance, if on the market, there's 50 staff with good skills, 50 staff with awful skills, after perhaps
 
 How to run:
+Same as in specification: java EcsSim [configFile] [startingCoins] [yearsToRun]
 
 Extensions:
+Not implemented yet.
 
 Coursework feedback:
-For an assignment that tries to teach us the supposed way of doing OOP, I find it annoying that I had had to make things work by breaking OOP.
+For an assignment that tries to teach us the supposed way of doing OOP, I find it slightly annoying that I had had to make things work by breaking OOP.
 I might be the only person who did thorough analysis of the building types and equations using Excel, and realise the chance of staff leaving is way too high, and break the whole system.
-However, things did become more interesting from part 5 and onwards.
+With that said, things got very interesting from part 5 and onwards.

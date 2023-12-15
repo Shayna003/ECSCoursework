@@ -55,59 +55,18 @@ public class HumanResource
   }
 
   /**
-   * Based on a study with Excel, I figured these numbers out, the chance of staff to leave is 20 (which you get by teaching any number > 0),
-   * so might as well teach the maximum number of students while spending 20 stamina
+   * Based on a study with Excel, I figured these numbers out, the chance of staff to leave is 20 (because you lose 20 stamina by teaching any number of studnets > 0),
+   * so might as well teach the maximum number of students while spending 20 stamina, which is the number returned by this function.
    * @return optimal number of students for a staff to teach based on their skill.
    * optimal is solely considered in terms of stamina cost, i.e. chance for staff to leave the university afterwards
    */
   public int optimalNumberOfStudentsToTeach(int skill)
   {
     return Math.floorDiv(skill, 10) * 10 + 20 + skill % 10;
-/*    //20 + skill % 10;
-    if (skill < 10)
-    {
-      return 20 + skill;
-    }
-    else if (skill < 20)
-    {
-      return 30 + (skill - 10);
-    }
-    else if (skill < 30)
-    {
-      return 40 + (skill - 10);;
-    }
-    else if (skill < 40)
-    {
-      return 50 + (skill - 10);;
-    }
-    else if (skill < 50)
-    {
-      return 60 + (skill - 40);
-    }
-    else if (skill < 60)
-    {
-      return 70 + (skill - 10);;
-    }
-    else if (skill < 70)
-    {
-      return 80 + (skill - 10);;
-    }
-    else if (skill < 80)
-    {
-      return 90 + (skill - 10);;
-    }
-    else if (skill < 90)
-    {
-      return 100 + (skill - 10);;
-    }
-    else // for skill range [90, 100]
-    {
-      return 120;
-    }*/
   }
 
   /**
-   * @return number of staff currently in the unviersity
+   * @return number of staff currently in the university
    */
   public int getStaffSize()
   {

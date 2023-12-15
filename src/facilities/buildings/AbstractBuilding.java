@@ -4,6 +4,11 @@ import facilities.Facility;
 
 /**
  * A workaround to have the same implementations for Lab, Theatre, Hall
+ * also a way to fix the class model in the specification where sometimes Facility is used and sometimes Building is used.
+ * You can use force conversion to convert between AbstractBuilding, Facility, Building easily than if Labs/Theatres etc directly interit from Facility
+ * and implement building.
+ * It's not "abstract" because I want to use a static variable to generate uniqueIDs.
+ * Due to actual usage, being abstract or not does not really change program behaviour.
  */
 public class AbstractBuilding extends Facility implements Building, Comparable<AbstractBuilding>
 {
@@ -11,10 +16,11 @@ public class AbstractBuilding extends Facility implements Building, Comparable<A
   private int max_level;
   private int base_capacity;
   private int base_cost;
-  private static int IDCounter;
-  private int ID;
+  private static int IDCounter; // static and incremented to ensure unique IDs
 
-  //public String type; // string mapping to class
+  // a unique ID given to each building, to help differentiate them
+  // (even though they are guarantee to have unique names based on year number, and that only 1 building can possibly be built each year)
+  private int ID;
 
   public AbstractBuilding(String name, int max_level, int base_capacity, int base_cost)
   {
@@ -23,18 +29,8 @@ public class AbstractBuilding extends Facility implements Building, Comparable<A
     this.max_level = max_level;
     this.base_capacity = base_capacity;
     this.base_cost = base_cost;
-    this.ID = ++IDCounter;
+    this.ID = ++IDCounter; // increment IDCounter to ensure unique IDs
   }
-
-/*  public AbstractBuilding(String name, int max_level, int base_capacity, int base_cost, int ID)
-  {
-    super(name);
-    this.level = 1;
-    this.max_level = max_level;
-    this.base_capacity = base_capacity;
-    this.base_cost = base_cost;
-    this.ID = ID;
-  }*/
 
   @Override
   public int getLevel()
@@ -57,6 +53,9 @@ public class AbstractBuilding extends Facility implements Building, Comparable<A
     return max_level;
   }
 
+  /**
+   * simulates an "upgrade". Not called directly by EcsSim
+   */
   @Override
   public void increaseLevel()
   {
@@ -76,7 +75,7 @@ public class AbstractBuilding extends Facility implements Building, Comparable<A
   }
 
   /**
-   * for easier debugging
+   * for easier debugging, and useful print information
    */
   @Override
   public String toString()
@@ -87,7 +86,7 @@ public class AbstractBuilding extends Facility implements Building, Comparable<A
   @Override
   /**
    * for use in priority queues
-   * compare using capacity
+   * compare using capacity, to find the most suitable building to upgrade.
    */
   public int compareTo(AbstractBuilding other)
   {
