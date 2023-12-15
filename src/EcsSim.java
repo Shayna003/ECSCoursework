@@ -28,7 +28,7 @@ public class EcsSim
       sim.staffMarket.add(new Staff("staff" + i, (int)(Math.random() * 101))); // populate staff market with some initial staff for sim to run
     }
     sim.staffMarket.sort((a, b) -> b.getSkill() - a.getSkill());
-    sim.simulate(50);
+    sim.simulate(100);
   }
 
   {
@@ -133,8 +133,8 @@ public class EcsSim
     {
       // cannot end up with negative budget, so will need at least the amount of money to pay staff salary and
       float staffStageBudget = university.getBudget() - university.getEstate().getMaintenanceCost() - university.getHumanResource().getTotalSalary();
-      out.printf("    staff stage budget: %.2f" + lineSeparator(), staffStageBudget);
-      out.printf("    staff market size: %d" + lineSeparator(), staffMarket.size());
+      if (printSimulation) out.printf("    staff stage budget: %.2f" + lineSeparator(), staffStageBudget);
+      if (printSimulation) out.printf("    staff market size: %d" + lineSeparator(), staffMarket.size());
 
       // if student-staff ratio is saturated, don't hire new staff
       int students = university.getEstate().getNumberOfStudents();
@@ -150,7 +150,7 @@ public class EcsSim
       {
         // to prevent concurrentmodificationerror
         Iterator<Staff> staffIterator = staffMarket.iterator();//university.getHumanResource().getStaff();
-        while (staffIterator.hasNext() && staffStageBudget > 0 && hireCount < 3)
+        while (staffIterator.hasNext() && staffStageBudget > 0 && hireCount < 3) // hireCount really depends on the size of the staff market.
         {
           Staff staff = staffIterator.next();
           // prepare for the worst: compute theoretical salary by the highest value possible, 10.5% of skill
@@ -200,8 +200,8 @@ public class EcsSim
     if (printSimulation) out.println();
 
     //3b pay staff's salary
-    if (printSimulation) if (printSimulation) out.printf("Paying staff salary of %.2f" + lineSeparator(), university.getHumanResource().getTotalSalary());
-    out.printf("    budget before= %.2f, ", university.getBudget());
+    if (printSimulation) out.printf("Paying staff salary of %.2f" + lineSeparator(), university.getHumanResource().getTotalSalary());
+    if (printSimulation) out.printf("    budget before= %.2f, ", university.getBudget());
     university.setBudget(university.getBudget() - university.getHumanResource().getTotalSalary());
     if (printSimulation) out.printf("budget after= %.2f", university.getBudget());
     if (printSimulation) out.println();
@@ -221,10 +221,11 @@ public class EcsSim
     int staffSize = university.getHumanResource().getStaffSize();
     university.getHumanResource().decideStaffFate(printSimulation); // printing here
     int staffSize2 = university.getHumanResource().getStaffSize();
-    if (printSimulation) out.println("    " + (staffSize2==staffSize ? "No" : "Unfortunately, " + (staffSize-staffSize2)) + " staff left this year.");
+    if (printSimulation && staffSize > 0) out.println("    " + (staffSize2==staffSize ? "Luckily, no" : "Unfortunately, " + (staffSize-staffSize2)) + " staff left this year.");
 
     //3f replenish staff stamina for all remaining staff
     university.getHumanResource().replenishStaminas();
+    if (printSimulation && staffSize2 > 0) out.println("    staff at the university enjoy a big holiday, and their stamina have been replenished (to 100, effectively).");
 
     if (printSimulation) out.printf("End of year reached. budget=%.2f, reputation=%d, # of students=%d, # of staff=%d" + lineSeparator(),
         university.getBudget(), university.getReputation(), university.getEstate().getNumberOfStudents(), university.getHumanResource().getStaffSize());

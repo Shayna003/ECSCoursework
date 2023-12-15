@@ -172,7 +172,7 @@ public class HumanResource
       boolean unlucky = random > staff.getStamina(); // leave depending on a chance based on staff stamina. it's controlled to be at 20%.
       if (printDetails & unlucky)
       {
-        System.out.println("    " + staff + " unfortunately leaves due to a \"low\" stamina of " + staff.getStamina() + ".");
+        System.out.println("    " + staff + " unfortunately leaves due to a \"low\" stamina of " + staff.getStamina() + " and sheer bad luck.");
       }
       return unlucky;
     });

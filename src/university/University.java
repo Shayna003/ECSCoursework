@@ -53,11 +53,16 @@ public class University
     budget = newValue;
   }
 
+  /**
+   * the specs don't say if negative values are allowed, by it makes sense to be
+   * notoriously bad somehow.
+   * @param newValue
+   */
   public void setReputation(int newValue)
   {
       if (newValue< 0)
       {
-        // error!
+        // error, probably
       }
       reputation = newValue;
   }
