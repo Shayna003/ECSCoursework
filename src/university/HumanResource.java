@@ -32,9 +32,11 @@ public class HumanResource
    * make all staff teach the maximum number of students that make their stamina drop by 20.
    * update number of uninstructed students.
    * @param cap the maximum number possible to teach (number of total students, passed by EcsSim
+   * @return total increase in reputation from teaching.
    */
-  public void makeStaffTeach(int cap, boolean printDetails)
+  public int makeStaffTeach(int cap, boolean printDetails)
   {
+    int[] increase = new int[] {0};
     staffSalary.forEach((staff, salary)->
     {
       int numberOfStudents = Math.min(cap, optimalNumberOfStudentsToTeach(staff.getSkill()));
@@ -42,12 +44,14 @@ public class HumanResource
       {
         int staminaBefore = staff.getStamina();
         int reputation = staff.instruct(numberOfStudents);
+        increase[0] += reputation;
         int staminaAfter = staff.getStamina();
         if (printDetails) System.out.println("    " + staff + " taught " + numberOfStudents + " students and lost " + (staminaBefore-staminaAfter) + " stamina. " + reputation + " reputation gained for university.");
         uninstructedStudents -= numberOfStudents;
         if (uninstructedStudents < 0) uninstructedStudents = 0;
       }
     });
+    return increase[0];
   }
 
   /**
@@ -168,7 +172,7 @@ public class HumanResource
       boolean unlucky = random > staff.getStamina(); // leave depending on a chance based on staff stamina. it's controlled to be at 20%.
       if (printDetails & unlucky)
       {
-        System.out.println("    " + staff + " unfortunately leaves due to a low stamina of " + staff.getStamina() + ".");
+        System.out.println("    " + staff + " unfortunately leaves due to a \"low\" stamina of " + staff.getStamina() + ".");
       }
       return unlucky;
     });

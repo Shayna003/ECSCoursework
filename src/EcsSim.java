@@ -6,6 +6,7 @@ import university.Estate;
 import university.Staff;
 import university.University;
 
+import static java.lang.System.in;
 import static java.lang.System.lineSeparator;
 import static java.lang.System.out;
 
@@ -72,7 +73,8 @@ public class EcsSim
    */
   public void simulate()
   {
-    if (printSimulation) out.println("------------------------year " + year);
+    int reputationBefore = university.getReputation();
+    if (printSimulation) out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~year " + year + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     if (printSimulation) out.println("Upgrading or buying new buildings: ");
     //1a TODO: build additional facilities or upgrade existing ones. cannot do nothing here
     // compare halls capacity, labs capacity, theatre capacity. Try upgrading a building of the building category with the least capacity,
@@ -90,7 +92,7 @@ public class EcsSim
       try
       {
         university.upgrade(toUpgrade); // perform upgrade on the most suitable building found by Estate if there is any.
-        if (printSimulation) out.println("    " + toUpgrade + " was upgraded.");
+        if (printSimulation) out.println("    " + toUpgrade + " was upgraded. reputation +50");
       }
       catch (Exception e) // the exception effectively cannot be triggered because of the extra checks involved
       {
@@ -101,19 +103,26 @@ public class EcsSim
     {
       // if null, then did not build due to budget deficit.
       Facility newBuiltFacility = university.getEstate().buildFacility(least, least + "_built_in_year_" + year, buildingStageBudget);
+      university.setReputation(university.getReputation() + 100);
+
       if (newBuiltFacility == null)
       {
         if (printSimulation) out.println("    No buildings were built or upgraded.");
       }
       else
       {
-        if (printSimulation) out.println("    " + newBuiltFacility + " was built.");
+        if (printSimulation) out.println("    " + newBuiltFacility + " was built. reputation +100");
       }
+    }
+    int reputationAfter = university.getReputation();
+    if (printSimulation)
+    {
+      out.println("    total increase in reputation: " + (reputationAfter-reputationBefore));
     }
 
     //1b increase budget by of number of students * 10
-    university.setReputation(university.getReputation() + university.getEstate().getNumberOfStudents() * 10);
-    if (printSimulation) out.printf("Reputation increased by %d from students" + lineSeparator(), university.getEstate().getNumberOfStudents() * 10);
+    university.setBudget(university.getBudget() + university.getEstate().getNumberOfStudents() * 10);
+    if (printSimulation) out.printf("Budget increased by %d from students" + lineSeparator(), university.getEstate().getNumberOfStudents() * 10);
 
     //1c TODO: hire additional staff from the market to teach students. cannot do nothing here
     if (printSimulation) out.println("Hiring staff:");
@@ -172,12 +181,15 @@ public class EcsSim
     // but staff market is a thing that gets supplied(not controlled by program), which can vary... so just give up on university reputation to make things safe
     // will just make every staff teach the maximum number of students that make their stamina drop by 20 (which any number above 0 would do)
     // that way their stamina always stay at 80 or 100
-    university.getHumanResource().makeStaffTeach(total, printSimulation);
+    int increaseInReputation = university.getHumanResource().makeStaffTeach(total, printSimulation);
+    university.setReputation(university.getReputation() + increaseInReputation);
+
     if (printSimulation)
     {
       int untaught = university.getHumanResource().getUninstructedStudents();
       int taught = total - untaught;
       out.printf("    total students: %d, taught: %d, untaught: %d" + lineSeparator(), total, taught, untaught);
+      out.printf("    total increase in reputation: %d" + lineSeparator(), increaseInReputation);
     }
 
     //3a pay estate's maintenance cost

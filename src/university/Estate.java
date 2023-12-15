@@ -65,7 +65,10 @@ public class Estate
     PriorityQueue<AbstractBuilding> pq = new PriorityQueue<>();
     for (Facility facility : facilities)
     {
-     if (facilities.getClass().getSimpleName().equals(type)) pq.add((AbstractBuilding) facility);
+     if (facility.getClass().getSimpleName().equals(type)) // easier mapping from string type name to class
+     {
+       pq.add((AbstractBuilding) facility);
+     }
     }
 
     if (pq.isEmpty())
