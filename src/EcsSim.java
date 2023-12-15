@@ -1,4 +1,5 @@
 import facilities.Facility;
+import facilities.buildings.AbstractBuilding;
 import facilities.buildings.Building;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,12 +24,18 @@ public class EcsSim
   public static void main(String[] args)
   {
     EcsSim sim = new EcsSim();
-    for (int i = 0; i < 100; i++)
+    int marketSize = 100;
+    int years = 100;
+    int coins = 603;
+    System.out.println("start simulation, staffMarketSize=" + marketSize + ", targetYears=" + years + ", startingEcsCoins=" + coins);
+
+    for (int i = 0; i < marketSize; i++)
     {
       sim.staffMarket.add(new Staff("staff" + i, (int)(Math.random() * 101))); // populate staff market with some initial staff for sim to run
     }
     sim.staffMarket.sort((a, b) -> b.getSkill() - a.getSkill());
-    sim.simulate(100);
+
+    sim.simulate(years, true);
   }
 
   {
@@ -37,7 +44,7 @@ public class EcsSim
   }
   public EcsSim()
   {
-    university = new University(1000); // initializes university with initial funding
+    university = new University(604); // initializes university with initial funding
   }
 
   public EcsSim(int funding)
@@ -75,6 +82,16 @@ public class EcsSim
   {
     int reputationBefore = university.getReputation();
     if (printSimulation) out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~year " + year + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    float yearStartingBudget = university.getBudget();
+    int yearStartingRepuation = university.getReputation();
+    int yearStartingStudents = university.getEstate().getNumberOfStudents();
+    int buildingsBuilt = 0;
+    int buildingsUpgraded = 0;
+    int startingStaff = university.getHumanResource().getStaffSize();
+    int staffHired = 0;
+    int staffLeft = 0;
+
+    if (printSimulation) out.printf("starting budget=%.2f" + lineSeparator(), yearStartingBudget);
     if (printSimulation) out.println("Upgrading or buying new buildings: ");
     //1a TODO: build additional facilities or upgrade existing ones. cannot do nothing here
     // compare halls capacity, labs capacity, theatre capacity. Try upgrading a building of the building category with the least capacity,
@@ -83,6 +100,7 @@ public class EcsSim
     if (printSimulation) out.println("    targeting building type with least capacity: " + least);
 
     // to avoid negative budget at end of year
+    float budgetBefore = university.getBudget();
     float buildingStageBudget = Math.min(university.getBudget(), university.getBudget() - university.getEstate().getMaintenanceCost() -university.getHumanResource().getTotalSalary() + university.getEstate().getNumberOfStudents() * 10);
     if (printSimulation) out.printf("    building stage budget: %.2f" + lineSeparator(), buildingStageBudget);
     Building toUpgrade = university.getEstate().findBuildingToUpgrade(least, buildingStageBudget);
@@ -91,8 +109,10 @@ public class EcsSim
     {
       try
       {
+        int cost = toUpgrade.getUpgradeCost();
         university.upgrade(toUpgrade); // perform upgrade on the most suitable building found by Estate if there is any.
-        if (printSimulation) out.println("    " + toUpgrade + " was upgraded. reputation +50");
+        buildingsUpgraded++;
+        if (printSimulation) out.println("    " + toUpgrade + " was upgraded. " + cost + " EcsCoins spent. reputation +50");
       }
       catch (Exception e) // the exception effectively cannot be triggered because of the extra checks involved
       {
@@ -103,7 +123,6 @@ public class EcsSim
     {
       // if null, then did not build due to budget deficit.
       Facility newBuiltFacility = university.getEstate().buildFacility(least, least + "_built_in_year_" + year, buildingStageBudget);
-      university.setReputation(university.getReputation() + 100);
 
       if (newBuiltFacility == null)
       {
@@ -111,13 +130,19 @@ public class EcsSim
       }
       else
       {
-        if (printSimulation) out.println("    " + newBuiltFacility + " was built. reputation +100");
+        buildingsBuilt++;
+        university.setReputation(university.getReputation() + 100);
+        int cost = ((AbstractBuilding)newBuiltFacility).getBase_cost();
+        university.setBudget(university.getBudget() - cost);
+        if (printSimulation) out.println("    " + newBuiltFacility + " was built. " + cost + " EcsCoins spent. reputation +100");
       }
     }
     int reputationAfter = university.getReputation();
     if (printSimulation)
     {
       out.println("    total increase in reputation: " + (reputationAfter-reputationBefore));
+      out.printf("    total EcsCoins spent: %.2f" + lineSeparator(), (budgetBefore - university.getBudget()));
+      out.printf("    remaining budget: %.2f" + lineSeparator(), university.getBudget());
     }
 
     //1b increase budget by of number of students * 10
@@ -126,6 +151,8 @@ public class EcsSim
 
     //1c TODO: hire additional staff from the market to teach students. cannot do nothing here
     if (printSimulation) out.println("Hiring staff:");
+    if (printSimulation) out.printf("    staff market size: %d" + lineSeparator(), staffMarket.size());
+
 
     int hireCount = 0; // might want to hire 1-3 staff per purchase/upgrade of a building, because there's a high chance for staff to leave even if they only teach 10 students with a skill of 100 (20%)
     // and considering the speed of students increasing by upgrading/purchasing new buildings.
@@ -134,7 +161,6 @@ public class EcsSim
       // cannot end up with negative budget, so will need at least the amount of money to pay staff salary and
       float staffStageBudget = university.getBudget() - university.getEstate().getMaintenanceCost() - university.getHumanResource().getTotalSalary();
       if (printSimulation) out.printf("    staff stage budget: %.2f" + lineSeparator(), staffStageBudget);
-      if (printSimulation) out.printf("    staff market size: %d" + lineSeparator(), staffMarket.size());
 
       // if student-staff ratio is saturated, don't hire new staff
       int students = university.getEstate().getNumberOfStudents();
@@ -144,6 +170,14 @@ public class EcsSim
         if (printSimulation)
         {
           out.println("    Student to staff ratio is good. No need to hire.");
+        }
+      }
+      else if (university.getEstate().getNumberOfStudents() == 0 && university.getBudget() < 603.9f)
+        // 603.9 is the bare minimum number of starting EcsCoins to start profiting (buying 1 of each building each year, and paying their maintenance costs.
+      {
+        if (printSimulation)
+        {
+          out.println("    Not hiring staff due to (potential) budget deficit.");
         }
       }
       else // attempt to hire staff
@@ -162,6 +196,7 @@ public class EcsSim
             staffStageBudget = university.getBudget() - university.getEstate().getMaintenanceCost() - university.getHumanResource().getTotalSalary();
             staffIterator.remove();
             hireCount++;
+            staffHired++;
           }
         }
       }
@@ -221,18 +256,36 @@ public class EcsSim
     int staffSize = university.getHumanResource().getStaffSize();
     university.getHumanResource().decideStaffFate(printSimulation); // printing here
     int staffSize2 = university.getHumanResource().getStaffSize();
-    if (printSimulation && staffSize > 0) out.println("    " + (staffSize2==staffSize ? "Luckily, no" : "Unfortunately, " + (staffSize-staffSize2)) + " staff left this year.");
+    staffLeft = (staffSize - staffSize2);
+    if (printSimulation && staffSize > 0) out.println("    " + (staffSize2==staffSize ? "Luckily, no" : "Unfortunately, " + staffLeft) + " staff left this year.");
 
     //3f replenish staff stamina for all remaining staff
     university.getHumanResource().replenishStaminas();
     if (printSimulation && staffSize2 > 0) out.println("    staff at the university enjoy a big holiday, and their stamina have been replenished (to 100, effectively).");
 
-    if (printSimulation) out.printf("End of year reached. budget=%.2f, reputation=%d, # of students=%d, # of staff=%d" + lineSeparator(),
+    if (printSimulation) out.printf("End of year reached. budget=%.2f, reputation=%d, # of students=%d, # of staff=%d." + lineSeparator(),
         university.getBudget(), university.getReputation(), university.getEstate().getNumberOfStudents(), university.getHumanResource().getStaffSize());
     if (printSimulation)
     {
+      out.printf("    Total budget change=%.2f, total reputation change=%d, " + lineSeparator() +
+              "    number of students change=%d, staff size change=%d, staff hired=%d, staff left=%d" + lineSeparator() +
+              "    buildings built=%d, buildings upgraded=%d" + lineSeparator(),
+          (university.getBudget() - yearStartingBudget), (university.getReputation() - yearStartingRepuation), (university.getEstate().getNumberOfStudents() - yearStartingStudents),
+          (university.getHumanResource().getStaffSize() - startingStaff), staffHired, staffLeft, buildingsBuilt, buildingsUpgraded);
+
+      /**
+       *     int yearStartingRepuationt = university.getReputation();
+       *     int yearStartingStudents = university.getEstate().getNumberOfStudents();
+       *     int buildingsBuilt = 0;
+       *     int buildingsUpgraded = 0;
+       *     int startingStaff = university.getHumanResource().getStaffSize();
+       *     int staffHired = 0;
+       *     int staffLeft = 0;
+       */
       university.getEstate().updateCapacities();
-      out.println("capacities breakdown: halls=" + university.getEstate().hallsCapacity + ", labs=" + university.getEstate().labsCapacity + ", theatres=" + university.getEstate().theatresCapacity);
+      out.println("Facilities Composition: ");
+      out.println("    Capacities: halls=" + university.getEstate().hallsCapacity + ", labs=" + university.getEstate().labsCapacity + ", theatres=" + university.getEstate().theatresCapacity);
+      out.println("    Building Count: " + university.getEstate().getNumberOfFacilities() + " total, " + university.getEstate().halls + " halls, " +  university.getEstate().labs + " labs, and " +  university.getEstate().theatres + " threatres.");
     }
     if (printSimulation) out.println();
     year++;
@@ -242,13 +295,15 @@ public class EcsSim
    * Method to simulate the university for several years.
    * @param years
    */
-  public void simulate(int years)
+  public void simulate(int years, boolean printSimulation)
   {
+    this.printSimulation = printSimulation;
     for (int i = 0; i < years; i++)
     {
       simulate();
       //pause(100);
     }
+    System.out.println("simulation complete.");
   }
 
   /**

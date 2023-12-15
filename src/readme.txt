@@ -13,6 +13,7 @@ It's also hard to keep reputation positive if staff skills from the market are v
 and a staff with 0 skill will only to change to skill 5, and only gain a reputation of 4 if they teach 130 students "sacrificially", dropping their stamina to 0.
 
 So I will say the strategy mostly depends on 1. target number of years to simulate, and 2. number and skill level distribution of staff market
+For instance, if on the market, there's 50 staff with good skills, 50 staff with awful skills, after perhaps
 
 How to run:
 

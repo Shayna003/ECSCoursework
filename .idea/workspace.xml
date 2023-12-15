@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b691d40-bc46-4595-88ad-1b4a2438eb61" name="Changes" comment="part 5 basically done">
+    <list default="true" id="0b691d40-bc46-4595-88ad-1b4a2438eb61" name="Changes" comment="minor changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/EcsSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EcsSim.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/readme.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/university/HumanResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/HumanResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/university/University.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/University.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/university/Estate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/university/Estate.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +45,7 @@
     "project.structure.side.proportion": "0.0"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.EcsSim">
+  <component name="RunManager" selected="JUnit.TestEcsSimPart3">
     <configuration name="EcsSim" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="EcsSim" />
       <module name="ECSCoursework" />
@@ -101,10 +100,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.EcsSim" />
         <item itemvalue="JUnit.TestEcsSimPart3" />
         <item itemvalue="JUnit.TestEcsSimPart2" />
         <item itemvalue="JUnit.TestEcsSimPart1" />
+        <item itemvalue="Application.EcsSim" />
       </list>
     </recent_temporary>
   </component>
@@ -173,7 +172,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702639457597</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="minor changes">
+      <created>1702641073584</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1702641073584</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -194,6 +200,28 @@
     <MESSAGE value="part 4 done" />
     <MESSAGE value="part 5 partially" />
     <MESSAGE value="part 5 basically done" />
-    <option name="LAST_COMMIT_MESSAGE" value="part 5 basically done" />
+    <MESSAGE value="minor changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor changes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/EcsSim.java</url>
+          <line>135</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/EcsSim.java</url>
+          <line>136</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/EcsSim.java</url>
+          <line>134</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

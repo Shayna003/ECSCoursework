@@ -215,6 +215,15 @@ public class Estate
   public int theatresCapacity;
   public int capacity;
 
+  public int halls;
+  public int labs;
+  public int theatres;
+
+  public int getNumberOfFacilities()
+  {
+    return facilities.size();
+  }
+
   /**
    * figure out the capacities of each facility. Called by EcsSim.
    * @return string representing the type with the least capacity.
@@ -225,15 +234,29 @@ public class Estate
     labsCapacity = 0;
     theatresCapacity = 0;
     capacity = 0;
+
+    halls = 0; labs = 0;theatres = 0;
     String least = "";
 
     for (Facility f : facilities)
     {
       int capacity = ((AbstractBuilding) f).getCapacity();
 
-      if (f instanceof Hall) hallsCapacity += capacity;
-      else if (f instanceof Lab) labsCapacity += capacity;
-      else if (f instanceof Theatre) theatresCapacity += capacity;
+      if (f instanceof Hall)
+      {
+        halls++;
+        hallsCapacity += capacity;
+      }
+      else if (f instanceof Lab)
+      {
+        labs++;
+        labsCapacity += capacity;
+      }
+      else if (f instanceof Theatre)
+      {
+        theatres++;
+        theatresCapacity += capacity;
+      }
     }
 
     // this default hall > theatre > lab order helps with deciding which building to prioritize building
