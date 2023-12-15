@@ -24,7 +24,7 @@ public class EcsSim
   public static void main(String[] args)
   {
     EcsSim sim = new EcsSim();
-    int marketSize = 200;
+    int marketSize = 100;
     int years = 100;
     int coins = 603;
     System.out.println("start simulation, staffMarketSize=" + marketSize + ", targetYears=" + years + ", startingEcsCoins=" + coins);
@@ -44,7 +44,7 @@ public class EcsSim
   }
   public EcsSim()
   {
-    university = new University(604); // initializes university with initial funding
+    university = new University(1000); // initializes university with initial funding
   }
 
   public EcsSim(int funding)
@@ -60,6 +60,8 @@ public class EcsSim
   {
     return staffSize * 20 > studentSize * 1.3;
   }
+
+  boolean depletedMarket = false;
 
   /**
    * Method to simulate a year of running the university. Each year the following sequence of events happens.
@@ -183,6 +185,11 @@ public class EcsSim
 
     int hireCount = 0; // might want to hire 1-3 staff per purchase/upgrade of a building, because there's a high chance for staff to leave even if they only teach 10 students with a skill of 100 (20%)
     // and considering the speed of students increasing by upgrading/purchasing new buildings.
+    if (staffMarket.size() == 0 && !depletedMarket)
+    {
+      if (printSimulation) out.println("STAFF MARKET DEPLETED AT YEAR " + year + "! fate of university remains unknown");
+      depletedMarket = true;
+    }
     if (staffMarket.size() != 0) // only consider if there is staff to hire
     {
       // cannot end up with negative budget, so will need at least the amount of money to pay staff salary and
@@ -209,11 +216,17 @@ public class EcsSim
       }
       else // attempt to hire staff
       {
+        int studentSize = university.getEstate().getNumberOfStudents();
         // to prevent concurrentmodificationerror
         Iterator<Staff> staffIterator = staffMarket.iterator();//university.getHumanResource().getStaff();
-        while (staffIterator.hasNext() && staffStageBudget > 0 && hireCount < 3) // hireCount really depends on the size of the staff market.
+
+        // commented out area: somehow the final reputation tend to be higher if you aggressively hire staff for the first part of your program and get as much reputation as possible, even if you run out of staff quicker this wqy
+        while (staffIterator.hasNext() && staffStageBudget > 0 && hireCount < 3 /*&& !staffToStudentsRatioGood(university.getHumanResource().getStaffSize(), studentSize)*/) // hireCount really depends on the size of the staff market.
         {
-          Staff staff = staffIterator.next();
+          //13534, 69, 5, yes
+          //17030, 76, 3, no
+          //11699, 72, 3, yes
+          Staff staff = staffIterator.next();//17948 19000, year of depletion 73, 77
           // prepare for the worst: compute theoretical salary by the highest value possible, 10.5% of skill
           float salary = staff.getSkill() * 0.105f;
           if (salary < staffStageBudget) // hire staff
