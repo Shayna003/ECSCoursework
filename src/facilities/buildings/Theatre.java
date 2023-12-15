@@ -4,7 +4,7 @@ import facilities.Facility;
 /**
  * facilities for lectures, required for students to learn theoretical knowledge.
  */
-public class Theatre extends AbstractBuilding implements Building
+public class Theatre extends AbstractBuilding
 {
   public Theatre(String name)
   {

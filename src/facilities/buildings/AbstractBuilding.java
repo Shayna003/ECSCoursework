@@ -5,13 +5,16 @@ import facilities.Facility;
 /**
  * A workaround to have the same implementations for Lab, Theatre, Hall
  */
-public abstract class AbstractBuilding extends Facility implements Building/*, Comparable<AbstractBuilding>*/
+public class AbstractBuilding extends Facility implements Building, Comparable<AbstractBuilding>
 {
   private int level;
   private int max_level;
   private int base_capacity;
   private int base_cost;
+  private static int IDCounter;
   private int ID;
+
+  //public String type; // string mapping to class
 
   public AbstractBuilding(String name, int max_level, int base_capacity, int base_cost)
   {
@@ -20,9 +23,10 @@ public abstract class AbstractBuilding extends Facility implements Building/*, C
     this.max_level = max_level;
     this.base_capacity = base_capacity;
     this.base_cost = base_cost;
+    this.ID = ++IDCounter;
   }
 
-  public AbstractBuilding(String name, int max_level, int base_capacity, int base_cost, int ID)
+/*  public AbstractBuilding(String name, int max_level, int base_capacity, int base_cost, int ID)
   {
     super(name);
     this.level = 1;
@@ -30,7 +34,7 @@ public abstract class AbstractBuilding extends Facility implements Building/*, C
     this.base_capacity = base_capacity;
     this.base_cost = base_cost;
     this.ID = ID;
-  }
+  }*/
 
   @Override
   public int getLevel()
@@ -80,12 +84,13 @@ public abstract class AbstractBuilding extends Facility implements Building/*, C
     return this.getClass().getSimpleName() + "[name=" + getName() + "," + "level=" + level + ",ID=" + ID + "]";
   }
 
-/*  @Override
-  *//**
-   * for sorting inside Facilities Arraylist of Estate class
+  @Override
+  /**
+   * for use in priority queues
    * compare using capacity
-   *//*
-  public int compareTo(AbstractBuilding o) {
-    return getCapacity() - o.getCapacity();
-  }*/
+   */
+  public int compareTo(AbstractBuilding other)
+  {
+    return other.getCapacity() - getCapacity();
+  }
 }

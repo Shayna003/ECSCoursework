@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 /**
  * Class to handle building and upgrading buildings. Knows the formula for building upgrade cost, and contains information about base building cost and
+  TODO: This class is currently unused
  */
 public class BuildingFactory
 {

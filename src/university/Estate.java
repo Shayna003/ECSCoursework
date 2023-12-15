@@ -10,17 +10,19 @@ import facilities.buildings.Theatre;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.PriorityQueue;
 
 public class Estate
 {
+  University university;
   private ArrayList<Facility> facilities;
   //int number_of_students;
 
   //for unique naming of a building
-  int buildingID = 1;
+/*  int buildingID = 1;
   int labID = 1;
   int theatreID = 1;
-  int hallID = 1;
+  int hallID = 1;*/
 
   //float maintenance_cost;
 
@@ -49,14 +51,39 @@ public class Estate
     }
   }
 
-/*  *//**
-   * called by the University
-   * @return true if upgrade success
-   *//*
-  public boolean upgrade(Building building)
+  /**
+   * called by the EcsSim
+   * tries to find a building of the type with the maximum level, then do the upgrade on it
+   * @return null if no building of such type is in facilities or if not enough funds to upgrade any/all are at max level,
+   * or the building to perform the upgrade passed back to the caller (university)
+   */
+  public Building findBuildingToUpgrade(String type, float availableFunds)
   {
+    if (availableFunds <= 0) return null;
+    // prioritizes availableFunds for upgrading the building with the highest capacity, as graphs from excel showed me that
+    // buildings with higher capacity/level tend to have higher capacity increase/upgrade cost ratio, thus more "lucrative".
+    PriorityQueue<AbstractBuilding> pq = new PriorityQueue<>();
+    for (Facility facility : facilities)
+    {
+     if (facilities.getClass().getSimpleName().equals(type)) pq.add((AbstractBuilding) facility);
+    }
 
-  }*/
+    if (pq.isEmpty())
+    {
+      return null;
+    }
+    AbstractBuilding ab;
+    do
+    {
+      ab = pq.poll();
+      if (ab.getUpgradeCost() <= availableFunds && ab.getLevel() < ab.getMax_level())
+      {
+        return (Building) ab;
+      }
+    }
+    while(!pq.isEmpty());
+    return null;
+  }
 
   public BuildingData getBuildingData(String type)
   {
@@ -84,6 +111,7 @@ public class Estate
    */
   public Facility buildFacility(String type, String name, float budget)
   {
+    if (budget <= 0) return null;
     BuildingData data = getBuildingData(type);
     if (data == null || data.base_cost > budget) return null;
 
@@ -176,6 +204,50 @@ public class Estate
     }
     return cost;
     //return maintenance_cost;
+  }
+
+  // to lazy for getters setters
+  public int hallsCapacity;
+  public int labsCapacity;
+  public int theatresCapacity;
+  public int capacity;
+
+  /**
+   * figure out the capacities of each facility. Called by EcsSim.
+   * @return string representing the type with the least capacity.
+   */
+  public String updateCapacities()
+  {
+    hallsCapacity = 0;
+    labsCapacity = 0;
+    theatresCapacity = 0;
+    capacity = 0;
+    String least = "";
+
+    for (Facility f : facilities)
+    {
+      int capacity = ((AbstractBuilding) f).getCapacity();
+
+      if (f instanceof Hall) hallsCapacity += capacity;
+      else if (f instanceof Lab) labsCapacity += capacity;
+      else if (f instanceof Theatre) theatresCapacity += capacity;
+    }
+
+    // this default hall > theatre > lab order helps with deciding which building to prioritize building
+    if (hallsCapacity <= labsCapacity && hallsCapacity <= theatresCapacity)
+    {
+      least = "Hall";
+    }
+    else if (theatresCapacity <= labsCapacity && theatresCapacity <= hallsCapacity)
+    {
+      least = "Theatre";
+    }
+    else if (labsCapacity <= hallsCapacity && labsCapacity <= theatresCapacity)
+    {
+      least = "Lab";
+    }
+    capacity = Math.min(Math.min(hallsCapacity, labsCapacity), theatresCapacity);
+    return least;
   }
 
   /**

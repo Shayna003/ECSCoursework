@@ -4,7 +4,7 @@ package university;
  * The University requires staff to supervise the laboratory sessions and teach the lectures.
  * The staff are an essential part of the University and are in charge of instructing the students on their learning at the University.
  */
-public class Staff
+public class Staff implements Comparable<Staff>
 {
   private String name;
   private int skill; // The skill of the staff, this should be between 0 and 100.
@@ -73,5 +73,25 @@ public class Staff
   public void increaseYearsOfTeaching()
   {
     yearsOfTeaching++;
+  }
+
+  /**
+   * potentially useful, not used for now
+   * @param competitor the object to be compared.
+   * @return
+   */
+  @Override
+  public int compareTo(Staff competitor)
+  {
+    return this.skill - competitor.skill;
+  }
+
+  /**
+   * Meaningful prints
+   */
+  @Override
+  public String toString()
+  {
+    return "Staff[name=" + name + ", skill=" + skill + ", yearsOfTeaching=" + yearsOfTeaching + "]";
   }
 }

@@ -2,7 +2,7 @@ package facilities;
 
 import facilities.buildings.AbstractBuilding;
 
-public class Facility implements Comparable<Facility>
+public class Facility/* implements Comparable<Facility>*/
 {
   private String name;
 
@@ -13,13 +13,13 @@ public class Facility implements Comparable<Facility>
 
   public String getName() { return this.name; }
 
+/*
 
-
-  /**
+  *//**
    * a nasty workaround to allow sorting for Facility objects inside the facilities Arraylist of Estate class.
    * since the known facilities are just Hall, Lab and Theatre, (which are all descendants of AbstractBuildingClass),
    * effectively treat them as AbstractBuildingClass object
-   */
+   *//*
   @Override
   public int compareTo(Facility other)
   {
@@ -33,5 +33,5 @@ public class Facility implements Comparable<Facility>
     }
 
     return 0;
-  }
+  }*/
 }
