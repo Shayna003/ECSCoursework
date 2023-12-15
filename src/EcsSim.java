@@ -24,7 +24,7 @@ public class EcsSim
   public static void main(String[] args)
   {
     EcsSim sim = new EcsSim();
-    int marketSize = 100;
+    int marketSize = 200;
     int years = 100;
     int coins = 603;
     System.out.println("start simulation, staffMarketSize=" + marketSize + ", targetYears=" + years + ", startingEcsCoins=" + coins);
@@ -50,6 +50,15 @@ public class EcsSim
   public EcsSim(int funding)
   {
     university = new University(funding); // initializes university with initial funding
+  }
+
+  /**
+   * arbitrary formula used to determine a good staff to student (or vice versa) ratio.
+   * @return whether or not the current ratio is a good ratio. i.e, if true, no need to hire new staff
+   */
+  public boolean staffToStudentsRatioGood(int staffSize, int studentSize)
+  {
+    return staffSize * 20 > studentSize * 1.3;
   }
 
   /**
@@ -103,46 +112,64 @@ public class EcsSim
     float budgetBefore = university.getBudget();
     float buildingStageBudget = Math.min(university.getBudget(), university.getBudget() - university.getEstate().getMaintenanceCost() -university.getHumanResource().getTotalSalary() + university.getEstate().getNumberOfStudents() * 10);
     if (printSimulation) out.printf("    building stage budget: %.2f" + lineSeparator(), buildingStageBudget);
-    Building toUpgrade = university.getEstate().findBuildingToUpgrade(least, buildingStageBudget);
 
-    if (toUpgrade != null)
-    {
-      try
-      {
-        int cost = toUpgrade.getUpgradeCost();
-        university.upgrade(toUpgrade); // perform upgrade on the most suitable building found by Estate if there is any.
-        buildingsUpgraded++;
-        if (printSimulation) out.println("    " + toUpgrade + " was upgraded. " + cost + " EcsCoins spent. reputation +50");
-      }
-      catch (Exception e) // the exception effectively cannot be triggered because of the extra checks involved
-      {
-        e.printStackTrace();
-      }
-    }
-    else // try to build a new building
-    {
-      // if null, then did not build due to budget deficit.
-      Facility newBuiltFacility = university.getEstate().buildFacility(least, least + "_built_in_year_" + year, buildingStageBudget);
+    boolean ratioGood = staffToStudentsRatioGood(startingStaff, yearStartingStudents);
 
-      if (newBuiltFacility == null)
-      {
-        if (printSimulation) out.println("    No buildings were built or upgraded.");
-      }
-      else
-      {
-        buildingsBuilt++;
-        university.setReputation(university.getReputation() + 100);
-        int cost = ((AbstractBuilding)newBuiltFacility).getBase_cost();
-        university.setBudget(university.getBudget() - cost);
-        if (printSimulation) out.println("    " + newBuiltFacility + " was built. " + cost + " EcsCoins spent. reputation +100");
-      }
-    }
-    int reputationAfter = university.getReputation();
-    if (printSimulation)
+    // do not expand if having a bad teacher to student ratio or have no staff while there is staff to hire. This leads to more negative reputation.
+    // but build buildings if not enough were built to have number of students > 0
+    //16000 - 21350
+
+    // strangely enough, testing results show that not having this feature tends to lead to better average reputation of different simulations
+    // I guess the reputation loss from not teaching is less than the potential gain from an expansionist strategy
+    //35287 37169
+    boolean skipExpansion = false;//yearStartingStudents > 0 && (startingStaff == 0 || !ratioGood) && staffMarket.size() > 0;
+    if (skipExpansion)
     {
-      out.println("    total increase in reputation: " + (reputationAfter-reputationBefore));
-      out.printf("    total EcsCoins spent: %.2f" + lineSeparator(), (budgetBefore - university.getBudget()));
-      out.printf("    remaining budget: %.2f" + lineSeparator(), university.getBudget());
+      if (printSimulation) out.println("    skipping expansion due to current bad staff to student ratio.");
+    }
+    else
+    {
+      Building toUpgrade = university.getEstate().findBuildingToUpgrade(least, buildingStageBudget);
+
+      if (toUpgrade != null)
+      {
+        try
+        {
+          int cost = toUpgrade.getUpgradeCost();
+          university.upgrade(toUpgrade); // perform upgrade on the most suitable building found by Estate if there is any.
+          buildingsUpgraded++;
+          if (printSimulation) out.println("    " + toUpgrade + " was upgraded. " + cost + " EcsCoins spent. reputation +50");
+        }
+        catch (Exception e) // the exception effectively cannot be triggered because of the extra checks involved
+        {
+          e.printStackTrace();
+        }
+      }
+      else // try to build a new building
+      {
+        // if null, then did not build due to budget deficit.
+        Facility newBuiltFacility = university.getEstate().buildFacility(least, least + "_built_in_year_" + year, buildingStageBudget);
+
+        if (newBuiltFacility == null)
+        {
+          if (printSimulation) out.println("    No buildings were built or upgraded.");
+        }
+        else
+        {
+          buildingsBuilt++;
+          university.setReputation(university.getReputation() + 100);
+          int cost = ((AbstractBuilding)newBuiltFacility).getBase_cost();
+          university.setBudget(university.getBudget() - cost);
+          if (printSimulation) out.println("    " + newBuiltFacility + " was built. " + cost + " EcsCoins spent. reputation +100");
+        }
+      }
+      int reputationAfter = university.getReputation();
+      if (printSimulation)
+      {
+        out.println("    total increase in reputation: " + (reputationAfter-reputationBefore));
+        out.printf("    total EcsCoins spent: %.2f" + lineSeparator(), (budgetBefore - university.getBudget()));
+        out.printf("    remaining budget: %.2f" + lineSeparator(), university.getBudget());
+      }
     }
 
     //1b increase budget by of number of students * 10
@@ -165,7 +192,7 @@ public class EcsSim
       // if student-staff ratio is saturated, don't hire new staff
       int students = university.getEstate().getNumberOfStudents();
       int staffSize = university.getHumanResource().getStaffSize();
-      if (staffSize * 20 > students * 1.3) // arbitrary value here.
+      if (staffToStudentsRatioGood(staffSize, students)) // arbitrary value here.
       {
         if (printSimulation)
         {
