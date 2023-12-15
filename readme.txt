@@ -24,5 +24,7 @@ Not implemented yet.
 
 Coursework feedback:
 For an assignment that tries to teach us the supposed way of doing OOP, I find it slightly annoying that I had had to make things work by breaking OOP.
+For example, Facility class and Building interface are effectively used interchangeably (the way the specification set things up), but
+that only complicates things.
 I might be the only person who did thorough analysis of the building types and equations using Excel, and realise the chance of staff leaving is way too high, and break the whole system.
 With that said, things got very interesting from part 5 and onwards.

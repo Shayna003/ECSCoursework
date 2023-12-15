@@ -14,7 +14,9 @@ import static java.lang.System.out;
 
 /**
  * The only class with main method
- * I have comments in readme.txt
+ * How to run:
+ * Same as in specification: java EcsSim [configFile] [startingCoins] [yearsToRun]
+ * I have some more comments in readme.txt
  */
 public class EcsSim
 {
